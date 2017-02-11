@@ -1,0 +1,14 @@
+.App-intro {
+  font-size: large;
+}
+
+.list-group-item {
+	text-align: center;
+	font-size: 200%;
+	text-decoration: none;
+}
+
+@keyframes homepage-logo-spin {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}

@@ -1,36 +1,38 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../layouts/CoreLayout'
 import Home from './Home'
+import Menu from './Menu'
 import CounterRoute from './Counter'
+import BazalRoute from './Bazal'
 
-/*  Note: Instead of using JSX, we recommend using react-router
-    PlainRoute objects to build route definitions.   */
+import {changeHeader} from '../components/Header/module/header';
 
-export const createRoutes = (store) => ({
-  path        : '/',
-  component   : CoreLayout,
-  indexRoute  : Home,
-  childRoutes : [
-    CounterRoute(store)
-  ]
-})
+export const createRoutes = (store) => {
 
-/*  Note: childRoutes can be chunked or otherwise loaded programmatically
-    using getChildRoutes with the following signature:
+  function setHeaderTitle(nextState) {
+    let componentName = nextState.routes[1].name;
+    store.dispatch(changeHeader(componentName));
+  }
 
-    getChildRoutes (location, cb) {
-      require.ensure([], (require) => {
-        cb(null, [
-          // Remove imports!
-          require('./Counter').default(store)
-        ])
-      })
-    }
+  function onChange(prevState, nextState, replace) {
+    setHeaderTitle(nextState);
+  }
 
-    However, this is not necessary for code-splitting! It simply provides
-    an API for async route definitions. Your code splitting should occur
-    inside the route `getComponent` function, since it is only invoked
-    when the route exists and matches.
-*/
+  function onEnter(nextState, replace) {
+    setHeaderTitle(nextState);
+  }
+  
+  return {
+    path: '/',
+    component: CoreLayout,
+    indexRoute: Menu,
+    onChange: onChange,
+    onEnter: onEnter,
+    childRoutes : [
+      CounterRoute(store),
+      BazalRoute(store)
+    ]
+  }
+}
 
 export default createRoutes
